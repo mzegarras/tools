@@ -1,0 +1,81 @@
+version: '3.3'
+services:
+  proxy:
+    image: msproxy:latest
+    ports:
+      - 8085:8085
+  db:
+      image: mysql:5.7
+      restart: always
+      ports:
+        - 3306:3306
+      environment:
+        MYSQL_ROOT_PASSWORD: password
+        MYSQL_DATABASE: appdb
+        MYSQL_USER: demouser
+        MYSQL_PASSWORD: demopwd
+  cache:
+    image: redis:4-alpine
+    command: sh -c 'echo "requirepass password" | redis-server -'
+    ports:
+      - 6379:6379
+  activemq1:
+    image: webcenter/activemq:5.14.3
+    ports:
+      # mqtt
+      #- "1883:1883"
+      # amqp
+      #- "5672:5672"
+      # ui
+      - "8161:8161"
+      # stomp
+      #- "61613:61613"
+      # ws
+      #- "61614:61614"
+      # jms
+      - "61616:61616"
+    environment:
+      ACTIVEMQ_REMOVE_DEFAULT_ACCOUNT: "true"
+      ACTIVEMQ_ADMIN_LOGIN: admin
+      ACTIVEMQ_ADMIN_PASSWORD: password
+      ACTIVEMQ_WRITE_LOGIN: write
+      ACTIVEMQ_WRITE_PASSWORD: password
+      ACTIVEMQ_READ_LOGIN: read
+      ACTIVEMQ_READ_PASSWORD: password
+      ACTIVEMQ_JMX_LOGIN: jmx
+      ACTIVEMQ_JMX_PASSWORD: password
+      ACTIVEMQ_STATIC_TOPICS: static-topic-1;static-topic-2
+      ACTIVEMQ_STATIC_QUEUES: static-queue-1;static-queue-2
+      ACTIVEMQ_ENABLED_SCHEDULER: "true"
+      ACTIVEMQ_MIN_MEMORY: 512
+      ACTIVEMQ_MAX_MEMORY: 2048
+  customers:
+    image: "customers"
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    ports:
+      - 8080:8080
+      #- 8091:8091
+    environment:
+      APP_NET_BROKER_URI: "tcp://activemq1:61616"
+  notifications1:
+    image: "notifications:latest"
+    #ports:
+      #- 8081:8080
+      #- 8091:8091
+    environment:
+      APP_NET_BROKER_URI: "activemq:tcp://activemq1:61616"
+    restart: on-failure
+    depends_on:
+      - activemq1
+  events1:
+    image: "events:latest"
+    #ports:
+      #- 8081:8080
+      #- 8091:8091
+    environment:
+      APP_NET_BROKER_URI: "activemq:tcp://activemq1:61616"
+    restart: on-failure
+    depends_on:
+      - activemq1

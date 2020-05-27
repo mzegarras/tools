@@ -1,0 +1,22 @@
+version: '3'
+services:
+  service1:
+    image: "tci-service1:latest"
+    build:
+      context: java/
+      dockerfile: ./Dockerfile
+    ports:
+      - 8080:8080
+  website:
+    image: "tci-web1:latest"
+    build:
+      context: angular2/
+      dockerfile: ./Dockerfile
+    ports:
+      - 8081:80
+  app:
+    image: nginx:alpine
+    ports:
+      - 8082:80
+    volumes:
+      - ./html:/usr/share/nginx/html:ro

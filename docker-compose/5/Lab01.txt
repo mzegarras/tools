@@ -1,0 +1,75 @@
+
+
+1.- Definir Response de los servicios
+        Customers
+          Get /list
+        Accounts
+          Get /list/{dni}
+        CreditsCards
+          Get /list/{dni}
+        CRM - Angular
+          DNI|Nombres|Dirección|Edad
+          ----------------------------
+          1234568|Cliente Z|Av. |20 | Ver Cuentas|Ver Tarjetas
+          1234569|Cliente Z|Av. |20 | Ver Cuentas|Ver Tarjetas
+          ----------------------------
+
+2.- Subir las images Docker Hub
+      TCI-Customers:1.0.0
+      TCI-CreditsCards:1.0.0
+      TCI-Accounts:1.0.0
+      TCI-CRM:1.0.0
+
+      Correo: mzegarra@gmail.com
+
+      CreditsCards:
+        docker run -p 8085:8080 dreytpo/tci-creditscards
+
+      Customers:
+        docker run -p 8086:8080 jmoralesadrianzen/tci-customers:1.0.0
+
+      Accounts:
+        docker run -p 8087:8080 fabiosalasm/tci-accounts:1.0.0
+
+3.-
+  CreditsCards:
+  http://localhost:8085/credit-card?dni=1231312
+  http://localhost:9070/tci-creditcard/{dni}
+  TCI-CreditsCards:2.0.0
+  docker run -p 9070:9070 dreytpo/tci-creditcard:3.0.0
+
+  Accounts:
+  http://localhost:8087/list/1234568
+  http://localhost:9071/tci-accounts/1234568
+  TCI-Accounts:2.0.0
+  docker run -p 9071:9071 fabiosalasm/tci-accounts:2.0.0
+
+  Customers:
+  http://localhost:8086/customer/clientes
+  http://localhost:9072/tci-customers/
+  TCI-Customers:2.0.0
+  docker run -p 9072:9072 jmoralesadrianzen/tci-customers:2.0.0
+
+4.-
+  http://localhost:8080/customers/
+  http://localhost:8080/accounts/1234568
+  http://localhost:8080/cards/1234568
+
+
+===
+location /accounts {
+  proxy_pass http://theshire-accounts:8080/accounts;
+}
+
+location /applications {
+  proxy_pass http://theshire-applications:8080/applications;
+}
+
+location /kba {
+  proxy_pass http://theshire-security:8080/kba;
+}
+
+location /oauth {
+  proxy_pass http://theshire-security:8080/oauth;
+}
+==

@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+   tci-creditcard:
+     image: dreytpo/tci-creditcard:3.0.0
+     # ports:
+     #   - "9070:9070"
+   tci-accounts:
+     image: fabiosalasm/tci-accounts:2.0.0
+     # ports:
+     #   - "9071:9071"
+   tci-customers:
+     image: jmoralesadrianzen/tci-customers:2.0.0
+     # ports:
+     #   - "9072:9072"
+   tci-gates:
+     image: "nginx:1.13.8-alpine"
+     volumes:
+       - "$PWD/nginx.conf:/etc/nginx/nginx.conf"
+     ports:
+       - 8080:8082
+     depends_on:
+       - tci-creditcard
+       - tci-accounts
+       - tci-customers
