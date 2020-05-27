@@ -10,7 +10,7 @@ services:
     environment:
       GIT_URI: "https://github.com/mzegarras/tci-config-dev.git"
       GIT_USER: "mzegarra"
-      GIT_PWD: "M0ssyUPC12@"
+      GIT_PWD: "password"
       KEYSTORE_PWD: "YOU_KEYSTORE_PASSWORD"
       KEYSTORE_ALIAS: "YOU_CONFIG_SERVER_KEY"
       KEYSTORE_SECRET: "YOU_KEYSTORE_PASSWORD"
