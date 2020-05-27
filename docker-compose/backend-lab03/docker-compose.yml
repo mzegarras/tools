@@ -2,7 +2,11 @@ version: '3.7'
 services:
 
   configserver:
-    image: "lab03"
+    #image: "lab03"
+    image: mzegarra/configserver:1.0.0
+    # build:
+    #   context: lab03
+    #   dockerfile: ./src/main/docker/Dockerfile
     #ports:
     #  - 8888:8888
     volumes:
@@ -46,22 +50,22 @@ services:
     #environment:
       #RABBITMQ_DEFAULT_USER: "rabbitmq"
       #RABBITMQ_DEFAULT_PASS: "rabbitmq"
-    #ports:
-      #- "15672:15672"
-      #- "5672:5672"
+    ports:
+      - "15672:15672"
+      - "5672:5672"
     volumes:
       - ./rabbitmq.config:/etc/rabbitmq/rabbitmq.config:ro
       - ./rabbitmq_definitions.json:/etc/rabbitmq/definitions.json:ro
 
   gates:
-    image: "gates:latest"
+    image: "mzegarra/gatessut"
     ports:
       - 8080:8443
     depends_on:
       - lab01
 
   lab01:
-    image: "lab01"
+    image: "mzegarra/lab01sut:1.0.0"
     #ports:
     #  - 8080:7070
     environment:
@@ -79,7 +83,7 @@ services:
       - cache-client
 
   lab02:
-    image: "lab02"
+    image: "mzegarra/lab02sut"
     environment:
       SERVER_CONFIG_ENABLED: "true"
       SERVER_CONFIG_URL: "http://configserver:8888"
@@ -94,7 +98,7 @@ services:
       - cache-client
 
   lab05:
-    image: "lab05"
+    image: "mzegarra/lab05sut:latest"
     environment:
       SERVER_CONFIG_ENABLED: "true"
       SERVER_CONFIG_URL: "http://configserver:8888"
