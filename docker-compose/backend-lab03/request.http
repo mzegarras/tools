@@ -1,12 +1,13 @@
 
+
 ### Send Sync
-GET http://localhost:8080/customers HTTP/1.1
+GET http://104.154.97.152:8080/customers HTTP/1.1
 content-type: application/json
 
 
 
 ### Send Sync
-POST http://localhost:8080/customers HTTP/1.1
+POST http://104.154.97.152:8080/customers HTTP/1.1
 content-type: application/json
 X-Api-Force-Sync: true
 
@@ -21,7 +22,7 @@ X-Api-Force-Sync: true
 
 
 ### Send Async
-POST http://localhost:8080/customers HTTP/1.1
+POST http://104.154.97.152:8080/customers HTTP/1.1
 content-type: application/json
 X-Api-Force-Sync: false
 
@@ -34,7 +35,7 @@ X-Api-Force-Sync: false
 }
 
 ### Send Async
-GET http://localhost:8080/correlations/gdBo99sTzsfnV2zEdO1DJNf0oroHNbq6jTIfSjzT HTTP/1.1
+GET http://104.154.97.152:8080/correlations/E5AmKBhtRFAtF6KP9cwpDTvGcOfyfg80wZH7PaJo HTTP/1.1
 
 
 ### DELETE program
@@ -47,7 +48,7 @@ fortio load -c 20 -qps 0 -n 20 -loglevel Warning http://localhost:8080/customers
 
 
 
-siege -r 5 -c 100 -d 1  -v -H "X-Api-Force-Sync: false" --content-type 'application/json' "http://localhost:8080/customers POST {
+siege -r 10 -c 100 -d 1  -v -H "X-Api-Force-Sync: false" --content-type 'application/json' "http://104.154.97.152:8080/customers POST {
     \"customer\": {
         \"nombre\": \"name1\",
         \"paterno\": \"lastname1222\",
