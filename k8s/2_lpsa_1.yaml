@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: lpsa
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: lpsa
+    spec:
+      containers:
+      - name: lpsa
+        image: mzegarra/lpsa:1.0
+        ports:
+        - containerPort: 80

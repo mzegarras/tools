@@ -12,16 +12,19 @@ docker run --name some-nginx -d -p 8080:80 nginx
 
 1.- Crear pods
 kubectl run my-nginx --image=nginx --replicas=2 --port=80
+kubectl scale deployments/my-nginx --replicas=5
 
 kubectl get pods
 kubectl get deployment
 
 2.- Crear service
 kubectl expose deployment my-nginx --port=80 --type=LoadBalancer
+kubectl expose deployment my-nginx --port=80 --type=Cluster
 
 3.- Eliminar service
-kubectl delete deployment my-nginx
 kubectl delete service my-nginx
+kubectl delete deployment my-nginx
+
 
 
 4.- Generar imagen:
